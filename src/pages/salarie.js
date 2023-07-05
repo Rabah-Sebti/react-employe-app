@@ -209,7 +209,7 @@ const Salarie = () => {
                       value={values.SAL_NOM}
                       onChange={handleChange}
                       // __onClick={handleClick}
-                      placeholder="First name"
+                      placeholder="First name *"
                     ></input>
                     <input
                       className="ap-input col col-6"
@@ -218,7 +218,7 @@ const Salarie = () => {
                       value={values.SAL_PRENOM}
                       onChange={handleChange}
                       // __onClick={handleClick}
-                      placeholder="Last name"
+                      placeholder="Last name *"
                     ></input>
                   </div>
                   <div className="row mt-2 mx-auto">
@@ -246,7 +246,7 @@ const Salarie = () => {
                       name="SAL_START_DATE"
                       value={values.SAL_START_DATE}
                       onChange={handleChange}
-                      placeholder="Start Date"
+                      placeholder="Start Date *"
                       onFocus={(e) => (e.target.type = "date")}
                       onBlur={(e) => (e.target.type = "text")}
                     ></input>
@@ -276,7 +276,7 @@ const Salarie = () => {
                       name="JOB_LIB"
                       value={values.JOB_LIB}
                       onChange={handleChange}
-                      placeholder="Job"
+                      placeholder="Job *"
                       onClick={showJobGrid}
                     ></input>
                   </div>

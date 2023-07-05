@@ -153,7 +153,7 @@ const Job = () => {
                       value={values.JOB_LIB}
                       onChange={handleChange}
                       // __onClick={handleClick}
-                      placeholder="Job Label"
+                      placeholder="Job Label *"
                     ></input>
                     <input
                       className="ap-input col col-6"
@@ -162,7 +162,7 @@ const Job = () => {
                       value={values.JOB_CODE}
                       onChange={handleChange}
                       // __onClick={handleClick}
-                      placeholder="Job code"
+                      placeholder="Job code *"
                     ></input>
                   </div>
                   <div className="row mt-2 mx-auto">
@@ -172,7 +172,7 @@ const Job = () => {
                       name="JOB_START_DATE"
                       value={values.JOB_START_DATE}
                       onChange={handleChange}
-                      placeholder="Start Date"
+                      placeholder="Start Date *"
                       onFocus={(e) => (e.target.type = "date")}
                       onBlur={(e) => (e.target.type = "text")}
                     ></input>
