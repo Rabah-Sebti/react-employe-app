@@ -287,6 +287,7 @@ ul {
   width: var(--fluid-width);
   max-width: var(--max-width);
   margin: 0 auto;
+color:#0e0101;
 }
 
 .full-page {
@@ -366,4 +367,7 @@ ul {
 }
 .app-sous-header{
   background-color: #FFDCFF;
+}
+a:hover{
+  background-color:inherit !important;
 }

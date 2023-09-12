@@ -23,13 +23,18 @@ import {
   DELETE_SAL_SUCCESS,
   DELETE_SAL_ERROR,
   INISIALIZE_PARAMS,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_ERROR,
+  FETCH_SALS_GEO_SUCCES,
 } from "./actions";
 import reducer from "./reducer";
 const initialState = {
+  mode: "dark",
   user: null,
   isLoading: false,
   jobs: [],
   salaries: [],
+  users: [],
   showAlert: false,
   oneJob: {
     JOB_LIB: "",
@@ -44,6 +49,7 @@ const initialState = {
   editComplete: false,
   message: "",
   succes: false,
+  salsGeo: [],
 };
 const AppContext = React.createContext();
 
@@ -218,6 +224,26 @@ const AppProvider = ({ children }) => {
   const initialiseParams = () => {
     dispatch({ type: INISIALIZE_PARAMS });
   };
+  // fetch users
+  const fetchUsers = async () => {
+    setLoading();
+    try {
+      const { data } = await axios.get(`/api/users`);
+      dispatch({ type: FETCH_USERS_SUCCESS, payload: data.users });
+    } catch (error) {
+      dispatch({ type: FETCH_USERS_ERROR });
+    }
+  };
+  // salaries geo
+  const fetchSalariesGeo = async () => {
+    setLoading();
+    try {
+      const { data } = await axios.get(`/api/salaries/geography`);
+      dispatch({ type: FETCH_SALS_GEO_SUCCES, payload: data });
+    } catch (error) {
+      // dispatch({ type: FETCH_SALS_ERROR });
+    }
+  };
   useEffect(() => {
     debugger;
     const user = sessionStorage.getItem("user");
@@ -245,6 +271,8 @@ const AppProvider = ({ children }) => {
         deleteSal,
         editSal,
         initialiseParams,
+        fetchUsers,
+        fetchSalariesGeo,
       }}
     >
       {children}

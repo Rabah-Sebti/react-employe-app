@@ -1,6 +1,6 @@
 // Rabah Developer
 import "./App.css";
-import React from "react";
+import React, { useMemo } from "react";
 import Menu from "./menu";
 import Planning from "./pages/Planning";
 import Login from "./components/Login";
@@ -15,34 +15,60 @@ import {
   Link,
   Routes,
   Navigate,
+  BrowserRouter,
 } from "react-router-dom";
 import { useGlobalContext } from "./context/context";
 import Job from "./pages/job";
 import JobsCards from "./pages/JobsCards";
 import SalariesCards from "./pages/salaries_cards";
+import { useSelector } from "react-redux";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { themeSettings } from "./themes";
+import Header from "./components/Header";
+import Users from "./pages/users";
+import SalariesGeography from "./pages/salarieGeo";
+import Dashboard from "./pages/dashboard";
 function App() {
+  // const mode = useSelector((state) => state.global.mode);
+  const theme = useMemo(() => createTheme(themeSettings("light")), ["light"]);
+
   debugger;
   return (
-    <Router>
-      {/* <SearchBar /> */}
-      <Routes>
-        <Route path="/" element={<Menu />} />
-        {/* <React.Fragment>
-                  <PrivateRoute path="/planning" element={<Planning />} />        
-              </React.Fragment> */}
-        <Route
-          path="/planning"
-          element={<PrivateRoute Component={Planning} />}
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registre />} />
-        <Route path="/planning/salarie" element={<Salarie />} />
-        <Route path="/planning/job" element={<Job />} />
-        <Route path="/planning/jobCards" element={<JobsCards />} />
-        <Route path="/planning/salariesCards" element={<SalariesCards />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Router>
+    <div className="app">
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {/* <Router> */}
+          <Routes>
+            <Route path="/" element={<Menu />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registre />} />
+
+            <Route element={<Header />}>
+              <Route
+                path="/planning"
+                element={<PrivateRoute Component={Planning} />}
+              />
+              <Route path="/dashboard" element={<Dashboard />} />
+
+              <Route path="/salariesCards" element={<SalariesCards />} />
+              <Route path="/salaries" element={<Salarie />} />
+              <Route
+                path="/salaries/geography"
+                element={<SalariesGeography />}
+              />
+
+              <Route path="/jobs" element={<Job />} />
+              <Route path="/jobsCards" element={<JobsCards />} />
+              <Route path="/users" element={<Users />} />
+
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+          {/* </Router> */}
+        </ThemeProvider>
+      </BrowserRouter>
+    </div>
   );
 }
 

@@ -20,6 +20,9 @@ import {
   DELETE_SAL_ERROR,
   DELETE_SAL_SUCCESS,
   INISIALIZE_PARAMS,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_ERROR,
+  FETCH_SALS_GEO_SUCCES,
 } from "./actions";
 
 const reducer = (state, action) => {
@@ -171,6 +174,29 @@ const reducer = (state, action) => {
       isLoading: false,
       succes: false,
       // oneJob: { ...action.payload },
+    };
+  }
+  if (action.type === FETCH_USERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      succes: false,
+      users: action.payload,
+    };
+  }
+  if (action.type === FETCH_USERS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      succes: false,
+    };
+  }
+  if (action.type === FETCH_SALS_GEO_SUCCES) {
+    return {
+      ...state,
+      isLoading: false,
+      succes: false,
+      salsGeo: action.payload,
     };
   }
 };

@@ -5,6 +5,17 @@ import Draggable from "react-draggable";
 import { useGlobalContext } from "../context/context";
 import GridSal from "./grid_salarie";
 import CloseIcon from "@mui/icons-material/Close";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import FlexSpaceBett from "../components/FlexSpaceBett";
 class ModalDragSal extends React.Component {
   render() {
     return (
@@ -19,29 +30,36 @@ class ModalDragSal extends React.Component {
           onDrag={this.handleDrag}
           onStop={this.handleStop}
         >
-          <div className="handle">
-            <div class="card text-center">
-              <div class="card-header">
-                {/* <ul class="nav nav-pills card-header-pills">
-                  <li class="nav-item "> */}
-                <div className="flex-1">
-                  <span>Salarie</span>
-                  <span className="nav-link ">
-                    <i onClick={this.props.closeModal} className="btn-cloe">
-                      <CloseIcon />
-                    </i>
-                  </span>
-                </div>
-              </div>
-              <div class="card-body ">
+          <Card className="handle">
+            <CardContent>
+              <FlexSpaceBett>
+                <Typography>Salarie</Typography>
+                <IconButton
+                  sx={{ color: "blue" }}
+                  onClick={this.props.closeModal}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </FlexSpaceBett>
+              <Divider />
+              <Box>
                 <GridSal
                   columns={this.props.columns}
                   jobs={this.props.jobs}
                   fillChamp={this.props.fillChamp}
                 />
-              </div>
-            </div>
-          </div>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <IconButton onClick={this.props.fetchSalaries}>
+                <RefreshIcon
+                  sx={{
+                    color: "blue",
+                  }}
+                />
+              </IconButton>
+            </CardActions>
+          </Card>
         </Draggable>
       </div>
     );

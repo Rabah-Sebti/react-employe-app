@@ -5,8 +5,22 @@ import Draggable from "react-draggable";
 import { useGlobalContext } from "../context/context";
 import GridJob from "./grid_job";
 import CloseIcon from "@mui/icons-material/Close";
+import RefreshIcon from "@mui/icons-material/Refresh";
+// import { useGlobalContext } from "../context/context";
+
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import FlexSpaceBett from "../components/FlexSpaceBett";
 class ModalDragJob extends React.Component {
   render() {
+    // const { fetchSalaries } = useGlobalContext();
     return (
       <div>
         <Draggable
@@ -19,32 +33,45 @@ class ModalDragJob extends React.Component {
           onDrag={this.handleDrag}
           onStop={this.handleStop}
         >
-          <div className="handle">
-            <div class="card text-center">
-              <div class="card-header">
-                {/* <ul class="nav nav-pills card-header-pills">
-                  <li class="nav-item "> */}
-                <div className="flex-1">
-                  <span>Job</span>
-                  <span className="nav-link ">
-                    <i onClick={this.props.closeModal} className="btn-cloe">
-                      <CloseIcon />
-                    </i>
-                  </span>
-                </div>
-                {/* <a class="nav-link disabled">Disabled</a> */}
-                {/* </li>
-                </ul> */}
-              </div>
-              <div class="card-body ">
+          <Card
+            className="handle"
+            // sx={{ backgroundColor: "yellow" }}
+          >
+            <CardContent>
+              <FlexSpaceBett>
+                <Typography
+                // sx={{
+                //   color: "black",
+                // }}
+                >
+                  Job
+                </Typography>
+                <IconButton
+                  sx={{ color: "blue" }}
+                  onClick={this.props.closeModal}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </FlexSpaceBett>
+              <Divider />
+              <Box>
                 <GridJob
                   columns={this.props.columns}
                   jobs={this.props.jobs}
                   fillChamp={this.props.fillChamp}
                 />
-              </div>
-            </div>
-          </div>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <IconButton onClick={this.props.fetchJobs}>
+                <RefreshIcon
+                  sx={{
+                    color: "blue",
+                  }}
+                />
+              </IconButton>
+            </CardActions>
+          </Card>
         </Draggable>
       </div>
     );

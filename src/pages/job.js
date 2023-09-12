@@ -3,8 +3,16 @@ import Header from "../components/Header";
 import { useGlobalContext } from "../context/context";
 import ModalDragJob from "./modal_job";
 import Swal from "sweetalert2";
-import HeaderPage from "../components/HeaderPage";
-
+import HeaderPage from "../components/HeaderPageManag";
+import { useCreateJobMutation, useGetJobsQuery } from "../context/api";
+import { Box, TextField } from "@mui/material";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { Navigate } from "react-router-dom";
+// import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 const Job = () => {
   const columns = [
     // { field: "JOB_ID", headerName: "ID", hideable: true },
@@ -20,7 +28,10 @@ const Job = () => {
     succes,
     deleteJob,
     initialiseParams,
+    user,
   } = useGlobalContext();
+  // const dataJobs = useGetJobsQuery().data;
+  // const [createJob] = useCreateJobMutation();
   // useEffect(() => {
   //   initialiseParams();
   // }, []);
@@ -42,7 +53,9 @@ const Job = () => {
   };
   const chargerJob = () => {
     debugger;
-    fetchJobs();
+    if (jobs.length === 0) {
+      fetchJobs();
+    }
     setShowModal(true);
   };
   const closeModal = () => {
@@ -120,8 +133,9 @@ const Job = () => {
   };
 
   return (
-    <div className="">
-      <Header />
+    <div>
+      {!user && <Navigate to="/login" replace />}
+      {/* <Header /> */}
       <HeaderPage
         name="JOB"
         submitCreateJob={submitCreateJob}
@@ -129,7 +143,116 @@ const Job = () => {
         submitDeleteJob={submitDeleteJob}
         chargerJob={chargerJob}
       />
-      <div className="row d-flex justify-content-center">
+      <Box
+        sx={{
+          marginTop: "6px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="form"
+          sx={{
+            // margin: "10px 100px ",
+            // backgroundColor:,
+            // display: "block",
+            // justifyContent: "center",
+            // alignItems: "center",
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <div>
+            <TextField
+              name="JOB_LIB"
+              value={values.JOB_LIB}
+              onChange={handleChange}
+              required
+              id="JOB_LIB"
+              label="Job Label"
+              // aria-label="Job Label"
+              // placeholder="Job Label"
+              defaultValue="Job Label"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="JOB_CODE"
+              value={values.JOB_CODE}
+              onChange={handleChange}
+              required
+              id="JOB_CODE"
+              // hiddenLabel={true}
+              // aria-label="Job Code"
+              label="Job Code"
+              defaultValue="Job Code"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              name="JOB_START_DATE"
+              value={values.JOB_START_DATE}
+              onChange={handleChange}
+              required
+              id="JOB_START_DATE"
+              label="Start Date"
+              defaultValue="Start Date"
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => (e.target.type = "text")}
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="JOB_END_DATE"
+              value={values.JOB_END_DATE}
+              onChange={handleChange}
+              required
+              id="JOB_END_DATE"
+              label="End Date"
+              defaultValue="End Date"
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => (e.target.type = "text")}
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              name="createdAt"
+              value={values.createdAt}
+              onChange={handleChange}
+              required
+              id="createdAt"
+              label="created At"
+              defaultValue="created At"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="createdBy"
+              value={values.createdBy}
+              onChange={handleChange}
+              required
+              id="createdBy"
+              label="created By"
+              defaultValue="created By"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+          </div>
+        </Box>
+      </Box>
+      {/* <div className="row d-flex justify-content-center">
         <div className="col col-6">
           <div class="card mx-auto mt-3 shadow">
             <div class="card-header"></div>
@@ -213,7 +336,7 @@ const Job = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {showModal ? (
         <ModalDragJob
           jobs={jobs}
@@ -221,6 +344,7 @@ const Job = () => {
           fillChamp={fillChamp}
           masterField={values.JOB_ID}
           closeModal={closeModal}
+          fetchJobs={fetchJobs}
         />
       ) : (
         ""

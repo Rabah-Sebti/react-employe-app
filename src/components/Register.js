@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import { useGlobalContext } from "../context/context";
 
 function Register() {
-  localStorage.removeItem("user");
+  // localStorage.removeItem("user");
   debugger;
   const { user, register, isLoading, showAlert } = useGlobalContext();
   const [values, setValues] = useState({

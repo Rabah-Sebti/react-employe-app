@@ -2,10 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { useGlobalContext } from "../context/context";
 import Swal from "sweetalert2";
-import HeaderPage from "../components/HeaderPage";
+import HeaderPage from "../components/HeaderPageManag";
 import ModalDragSal from "./modal_salarie";
 import ModalDragJob from "./modal_job";
+import {
+  useCreateSalarieMutation,
+  useGetJobsQuery,
+  useGetSalariesQuery,
+} from "../context/api";
+import { Autocomplete, Box, TextField } from "@mui/material";
+import { Divider, theme } from "antd";
+import { countries } from "../assets/country";
+import { Navigate } from "react-router-dom";
 const Salarie = () => {
+  debugger;
   const columns = [
     // { field: "id", headerName: "ID", hideable: true },
     { field: "SAL_NOM", headerName: "Last name", width: 150 },
@@ -16,7 +26,11 @@ const Salarie = () => {
     { field: "JOB_LIB", headerName: "Job Label", width: 100 },
     { field: "JOB_CODE", headerName: "Job Code", width: 100 },
   ];
-
+  // const { data: dataSalar } = useGetSalariesQuery();
+  // const dataSalar = useGetJobsQuery().data;
+  //  const [login, { isLoading }] = useLoginMutation();
+  // const { data: dataJobs } = useGetJobsQuery();
+  // const [createSalarie] = useCreateSalarieMutation();
   const {
     fetchSalaries,
     createSal,
@@ -28,6 +42,7 @@ const Salarie = () => {
     fetchJobs,
     salaries,
     initialiseParams,
+    user,
   } = useGlobalContext();
   // useEffect(() => {
   //   initialiseParams();
@@ -49,11 +64,18 @@ const Salarie = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalJob, setShowModalJob] = useState(false);
   const handleChange = (event) => {
+    debugger;
     setValues({ ...values, [event.target.name]: event.target.value });
+  };
+  const handleChangeAuto = (data) => {
+    debugger;
+    setValues({ SAL_PAYS: data.code });
   };
   const chargerSal = () => {
     debugger;
-    fetchSalaries();
+    if (salaries.length === 0) {
+      fetchSalaries();
+    }
     setShowModal(true);
   };
   const closeModal = () => {
@@ -95,14 +117,14 @@ const Salarie = () => {
       });
     }
   };
-  if (succes) {
-    Swal.fire({
-      title: "Success",
-      text: "Action Effectuer Avec Succés",
-      icon: "success",
-    });
-    initialiseParams();
-  }
+  // if (succes) {
+  //   Swal.fire({
+  //     title: "Success",
+  //     text: "Action Effectuer Avec Succés",
+  //     icon: "success",
+  //   });
+  // initialiseParams();
+  // }
   const submitUpdateSal = () => {
     debugger;
     if (values.SAL_ID) {
@@ -129,7 +151,6 @@ const Salarie = () => {
   };
   const fillChampJob = (oneSalarie) => {
     debugger;
-    debugger;
     setValues({
       ...values,
       JOB_ID: oneSalarie[0].JOB_ID,
@@ -138,9 +159,11 @@ const Salarie = () => {
   };
 
   debugger;
-  if (isLoading && !succes) {
-    return <div className="loading"></div>;
-  }
+  // if (isLoading)
+  // && !succes)
+
+  // return <div className="loading"></div>;
+
   const submitDeleteSal = () => {
     debugger;
     if (values.SAL_ID) {
@@ -162,13 +185,16 @@ const Salarie = () => {
     }
   };
   const showJobGrid = () => {
-    fetchJobs();
+    if (jobs.length === 0) {
+      fetchJobs();
+    }
     setShowModalJob(true);
   };
 
   return (
-    <div className="">
-      <Header />
+    <Box>
+      {!user && <Navigate to="/login" replace />}
+      {/* <Header /> */}
       <HeaderPage
         name="Salarie"
         submitCreateJob={submitCreateSal}
@@ -176,137 +202,140 @@ const Salarie = () => {
         submitDeleteJob={submitDeleteSal}
         chargerJob={chargerSal}
       />
-      <div className="row d-flex justify-content-center">
-        <div className="col col-6">
-          <div class="card mx-auto mt-3 shadow">
-            <div class="card-header"></div>
-            <div class="card-body">
-              <div class="box text-center ">
-                <div class="row align-items-center ">
-                  <div class="row mx-auto">
-                    <input
-                      className="col col-8"
-                      type="hidden"
-                      name="SAL_ID"
-                      value={values.SAL_ID}
-                      onChange={handleChange}
-                      // __onClick={handleClick}
-                      placeholder="id"
-                    ></input>
-                    <input
-                      className="col col-8"
-                      type="hidden"
-                      name="JOB_ID"
-                      value={values.JOB_ID}
-                      onChange={handleChange}
-                      // __onClick={handleClick}
-                      placeholder="id job"
-                    ></input>
-                    <input
-                      className="ap-input col col-6"
-                      type="text"
-                      name="SAL_NOM"
-                      value={values.SAL_NOM}
-                      onChange={handleChange}
-                      // __onClick={handleClick}
-                      placeholder="First name *"
-                    ></input>
-                    <input
-                      className="ap-input col col-6"
-                      type="text"
-                      name="SAL_PRENOM"
-                      value={values.SAL_PRENOM}
-                      onChange={handleChange}
-                      // __onClick={handleClick}
-                      placeholder="Last name *"
-                    ></input>
-                  </div>
-                  <div className="row mt-2 mx-auto">
-                    <input
-                      className="ap-input col-6 "
-                      type="text"
-                      name="SAL_ADR"
-                      value={values.SAL_ADR}
-                      onChange={handleChange}
-                      placeholder="Adress"
-                    ></input>
-                    <input
-                      className="ap-input col-6 "
-                      type="text"
-                      name="SAL_PAYS"
-                      value={values.SAL_PAYS}
-                      onChange={handleChange}
-                      placeholder="Country"
-                    ></input>
-                  </div>
-                  <div className="row mt-2 mx-auto">
-                    <input
-                      className="ap-input col-6 "
-                      type="text"
-                      name="SAL_START_DATE"
-                      value={values.SAL_START_DATE}
-                      onChange={handleChange}
-                      placeholder="Start Date *"
-                      onFocus={(e) => (e.target.type = "date")}
-                      onBlur={(e) => (e.target.type = "text")}
-                    ></input>
-                    <input
-                      className="ap-input col-6"
-                      type="text"
-                      name="SAL_END_DATE"
-                      value={values.SAL_END_DATE}
-                      onChange={handleChange}
-                      placeholder="End Date"
-                      onFocus={(e) => (e.target.type = "date")}
-                      onBlur={(e) => (e.target.type = "text")}
-                    ></input>
-                  </div>
-                  <div className="row mt-2 mx-auto">
-                    <input
-                      className="ap-input col-6 "
-                      type="text"
-                      name="SAL_PHONE"
-                      value={values.SAL_PHONE}
-                      onChange={handleChange}
-                      placeholder="Phone Number"
-                    ></input>
-                    <input
-                      className="ap-input col-6 "
-                      type="text"
-                      name="JOB_LIB"
-                      value={values.JOB_LIB}
-                      onChange={handleChange}
-                      placeholder="Job *"
-                      onClick={showJobGrid}
-                    ></input>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              {/* <div></div> */}
-              <input
-                id="createdBy"
-                className="ap-input col-6 "
-                type="text"
-                name="createdBy"
-                value={values.createdBy}
-                placeholder="Created By"
-                disabled
-              ></input>
-              <input
-                id="createdAt"
-                className="ap-input col-6"
-                type="text"
-                name="createdAt"
-                value={values.createdAt}
-                placeholder="Created At"
-                disabled
-              ></input>
-            </div>
+      <Box
+        sx={{
+          marginTop: "6px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="form"
+          sx={{
+            // margin: "10px 100px ",
+            // backgroundColor:,
+            // display: "block",
+            // justifyContent: "center",
+            // alignItems: "center",
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <div>
+            <TextField
+              name="SAL_NOM"
+              value={values.SAL_NOM}
+              onChange={handleChange}
+              required
+              id="outlined-required"
+              label="First Name"
+              defaultValue="First Name"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="SAL_PRENOM"
+              value={values.SAL_PRENOM}
+              onChange={handleChange}
+              required
+              id="outlined-required2"
+              label="Last Name"
+              defaultValue="Last Name"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
           </div>
-        </div>
-      </div>
+          <div>
+            <TextField
+              name="SAL_ADR"
+              value={values.SAL_ADR}
+              onChange={handleChange}
+              required
+              id="outlined-required3"
+              label="Adress"
+              defaultValue="Adress"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="SAL_PAYS"
+              value={values.SAL_PAYS}
+              onChange={handleChange}
+              required
+              id="outlined-required4"
+              label="Country"
+              defaultValue="Country"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+          </div>
+
+          <div>
+            <TextField
+              name="SAL_PHONE"
+              value={values.SAL_PHONE}
+              onChange={handleChange}
+              required
+              id="outlined-required7"
+              label="Phone Number"
+              defaultValue="Phone Number"
+              sx={{
+                opacity: "0.5",
+              }}
+            />
+            <TextField
+              name="JOB_LIB"
+              value={values.JOB_LIB}
+              onChange={handleChange}
+              required
+              id="outlined-required8"
+              label="Job"
+              defaultValue="Job"
+              sx={{
+                opacity: "0.5",
+              }}
+              onClick={() => showJobGrid()}
+            />
+          </div>
+          {/* <Divider /> */}
+
+          <div>
+            <TextField
+              name="createdAt"
+              value={values.createdAt}
+              onChange={handleChange}
+              required
+              id="outlined-required9"
+              label="created At"
+              defaultValue="created At"
+              sx={{
+                opacity: "0.5",
+              }}
+              disabled
+            />
+            <TextField
+              name="createdBy"
+              value={values.createdBy}
+              onChange={handleChange}
+              required
+              id="outlined-required10"
+              label="created By"
+              defaultValue="created By"
+              sx={{
+                opacity: "0.5",
+              }}
+              disabled
+            />
+          </div>
+        </Box>
+      </Box>
+
       {showModal ? (
         <ModalDragSal
           jobs={salaries}
@@ -315,6 +344,7 @@ const Salarie = () => {
           masterField={values.JOB_ID}
           closeModal={closeModal}
           master_id="SAL_ID"
+          fetchSalaries={fetchSalaries}
         />
       ) : (
         ""
@@ -327,11 +357,12 @@ const Salarie = () => {
           // masterField={values.JOB_ID}
           closeModal={closeModalJobs}
           master_id="SAL_ID"
+          fechJobs={fetchJobs}
         />
       ) : (
         ""
       )}
-    </div>
+    </Box>
   );
 };
 export default Salarie;
