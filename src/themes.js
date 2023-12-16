@@ -1,16 +1,16 @@
 // color design tokens export
 // ctrl + k ctrl + g
-white: {
-          100: "#fdfdff",
-          200: "#fbfcff",
-          300: "#f9faff",
-          400: "#f7f9ff",
-          500: "#f5f7ff",
-          600: "#c4c6cc",
-          700: "#939499",
-          800: "#626366",
-          900: "#313133"
-},
+// white: {
+//           100: "#fdfdff",
+//           200: "#fbfcff",
+//           300: "#f9faff",
+//           400: "#f7f9ff",
+//           500: "#f5f7ff",
+//           600: "#c4c6cc",
+//           700: "#939499",
+//           800: "#626366",
+//           900: "#313133"
+// };
 
 export const tokensDark = {
   grey: {
