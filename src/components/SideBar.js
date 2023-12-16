@@ -30,7 +30,7 @@ import {
 import FlexSpaceBett from "./FlexSpaceBett";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import profileImage from "../assets/img2.jpg";
+import profileImage from "../assets/img2.png";
 const navItems = [
   {
     text: "Dashboard",

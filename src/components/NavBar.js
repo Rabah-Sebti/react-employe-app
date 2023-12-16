@@ -22,7 +22,7 @@ import {
 // import { useDispatch } from "react-redux";
 // import { logOut, setMode } from "../context/appContext";
 import { useState } from "react";
-import profileImage from "../assets/img2.jpg";
+import profileImage from "../assets/img2.png";
 import SearchBar from "./SearchBar";
 import SearchComp from "./Search";
 import { useGlobalContext } from "../context/context";
